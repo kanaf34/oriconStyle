@@ -28,5 +28,5 @@
   // })
 
 
-  gulp.task('default', ['browserify']);
+  gulp.task('default', ['watch']);
 })()
