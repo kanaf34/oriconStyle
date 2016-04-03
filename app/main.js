@@ -27,14 +27,25 @@ var parsePageToJson = function(result) {
 	var ul = document.createElement('ul');
 	for (var i=0; i<rankList.length; i++) {
 		var li = document.createElement('li');
-		li.innerText = rankList[i].title + ' / ' + rankList[i].singer + ' / ' + rankList[i].organization;
+		li.innerText = (i+1) + ' / ' + rankList[i].title + ' / ' + rankList[i].singer + ' / ' + rankList[i].organization;
 		ul.appendChild(li);
 	}
 	divRank.appendChild(ul);
 }
 
+var getToday = function() {
+	var date = new Date(),
+	    month = '' + (date.getMonth() + 1),
+	    day   = '' + date.getDate(),
+	    year  = date.getFullYear();
+
+	month = (month.length < 2) ? '0' + month : month;
+	day   = (day.length < 2) ? '0' + day : day;
+	return [year, month, day].join('-');
+}
 
 var url = 'https://script.google.com/macros/s/AKfycbx_JQBUfwIjhR2lc_9xx3ByPsyXiZNA9RpIVdCcZ7xEGITEiIQj/exec';
-url += '?action=singleDaily'
+url += '?action=singleDaily';
+url += '&day=' + getToday();
 
 loadJSONP(url, parsePageToJson, this);
