@@ -21,7 +21,10 @@ var loadJSONP = (function() {
 })();
 
 var parsePageToJson = function(result) {
-	var divRank = document.getElementById('rankList');
+	var titleDay = document.getElementById('titleDay');
+	titleDay.innerText = getToday();
+
+	var divRank  = document.getElementById('rankList');
 
 	var rankList = result.rankList;
 	var ul = document.createElement('ul');
@@ -36,7 +39,7 @@ var parsePageToJson = function(result) {
 var getToday = function() {
 	var date = new Date(),
 	    month = '' + (date.getMonth() + 1),
-	    day   = '' + date.getDate(),
+	    day   = '' + (date.getDate()-1),
 	    year  = date.getFullYear();
 
 	month = (month.length < 2) ? '0' + month : month;
