@@ -1,7 +1,6 @@
 (function() {
   var gulp   = require('gulp')
     , browserify = require('gulp-browserify')
-    // , uglify = require('gulp-uglify')
     , rename = require('gulp-rename');
    
   var getProjectName = function() {
@@ -21,6 +20,7 @@
       .pipe(gulp.dest('./app'));
   })
 
+  // var uglify = require('gulp-uglify');
   // gulp.task('uglify', function() {
   //   return gulp.src('./app/bundle.js')  
   //     .pipe(uglify({mangle:false}))

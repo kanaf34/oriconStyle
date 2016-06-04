@@ -1,13 +1,15 @@
-var loadJSONP = (function() {
+var getByJsonp = (function() {
 	var unique = 0;
+
 	return function(url, callback, context) {
-		var name = "_jsonp_" + unique++;
-		if (url.match(/\?/)) url += "&callback="+name;
-    	else url += "?callback="+name;
+		var name = '_jsonp_' + unique++;
+
+		var param = (url.match(/\?/)) ? '&' : '?';
+		param += 'callback=' + name;
 
 		var script = document.createElement('script');
 		script.type = 'application/javascript';
-		script.src  = url;
+		script.src  = url + param;
 
 		window[name] = function(data) {
 			callback.call((context||window), data);
@@ -20,26 +22,26 @@ var loadJSONP = (function() {
 	}
 })();
 
-var parsePageToJson = function(result) {
+var drawPage = function(result) {
 	var titleDay = document.getElementById('titleDay');
-	titleDay.innerText = getToday();
+	titleDay.innerText = getYesterDay();
 
 	var divRank  = document.getElementById('rankList');
-
-	var rankList = result.rankList;
 	var ul = document.createElement('ul');
-	for (var i=0; i<rankList.length; i++) {
+	var rankList = result.rankList;
+	rankList.forEach(function(item, idx) {
 		var li = document.createElement('li');
-		li.innerText = (i+1) + ' / ' + rankList[i].title + ' / ' + rankList[i].singer + ' / ' + rankList[i].organization;
-		ul.appendChild(li);
-	}
+		li.innerText = (idx+1) + ' / ' + item.title + ' / ' + item.singer + ' / ' + item.organization;
+		ul.appendChild(li);	
+	});
+
 	divRank.appendChild(ul);
 }
 
-var getToday = function() {
+var getYesterDay = function() {
 	var date = new Date(),
 	    month = '' + (date.getMonth() + 1),
-	    day   = '' + (date.getDate()-1),
+	    day   = '' + (date.getDate()-2),
 	    year  = date.getFullYear();
 
 	month = (month.length < 2) ? '0' + month : month;
@@ -49,6 +51,6 @@ var getToday = function() {
 
 var url = 'https://script.google.com/macros/s/AKfycbx_JQBUfwIjhR2lc_9xx3ByPsyXiZNA9RpIVdCcZ7xEGITEiIQj/exec';
 url += '?action=singleDaily';
-url += '&day=' + getToday();
+url += '&day=' + getYesterDay();
 
-loadJSONP(url, parsePageToJson, this);
+getByJsonp(url, drawPage, this);
